@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Search, Settings, User, LogOut, Moon, Sun } from 'lucide-react';
+import { Search, Settings, User, LogOut, Moon, Sun, Brain } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from 'next-themes';
+import { Link } from 'react-router-dom';
 
 export const Header = () => {
   const { user, signOut } = useAuth();
@@ -20,12 +21,12 @@ export const Header = () => {
     <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
       <div className="flex items-center justify-between px-6 py-3">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
+          <Link to="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <Search className="w-4 h-4 text-white" />
+              <Brain className="w-4 h-4 text-white" />
             </div>
-            <h1 className="text-xl font-bold">i-SMART Research Scholar</h1>
-          </div>
+            <h1 className="text-xl font-bold">ResearchAI</h1>
+          </Link>
         </div>
 
         <div className="flex items-center gap-4">
@@ -66,8 +67,8 @@ export const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button variant="outline" onClick={() => window.location.href = '/auth'}>
-              Sign In
+            <Button variant="outline" asChild>
+              <Link to="/auth">Sign In</Link>
             </Button>
           )}
         </div>

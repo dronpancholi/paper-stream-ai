@@ -84,11 +84,11 @@ export default function LandingPage() {
             <span className="text-2xl font-bold">ResearchAI</span>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" className="text-white hover:bg-white/10">
-              Features
+            <Button variant="ghost" className="text-white hover:bg-white/10" asChild>
+              <Link to="/demo">Demo</Link>
             </Button>
             <Button variant="ghost" className="text-white hover:bg-white/10">
-              Pricing
+              Features
             </Button>
             <Button asChild variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white hover:text-primary">
               <Link to="/auth">Sign In</Link>
@@ -224,7 +224,7 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-4">Product</h4>
               <div className="space-y-2 text-muted-foreground">
                 <div>Features</div>
-                <div>Pricing</div>
+                <div>Demo</div>
                 <div>API</div>
                 <div>Documentation</div>
               </div>

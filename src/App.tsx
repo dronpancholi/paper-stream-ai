@@ -7,6 +7,7 @@ import { SecurityProvider } from "@/components/Security/SecurityProvider";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/Dashboard";
+import Demo from "./pages/Demo";
 import Auth from "./pages/Auth";
 import MyPages from "./pages/MyPages";
 import Bookmarks from "./pages/Bookmarks";
@@ -38,6 +39,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/demo" element={<Demo />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/my-pages" element={<MyPages />} />
             <Route path="/bookmarks" element={<Bookmarks />} />
