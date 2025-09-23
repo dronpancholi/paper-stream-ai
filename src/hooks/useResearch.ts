@@ -3,6 +3,7 @@ import { ResearchPaper } from '@/components/Research/PaperCard';
 import { SearchFiltersType } from '@/components/Research/SearchFilters';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useSearchCache, useRealTimeUpdates } from '@/hooks/useRealTimeUpdates';
 
 interface SearchResults {
   papers: ResearchPaper[];
@@ -15,6 +16,23 @@ export function useResearch() {
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<SearchFiltersType>({});
   const { toast } = useToast();
+  const { getCachedResult, setCachedResult } = useSearchCache();
+
+  const { isConnected } = useRealTimeUpdates([
+    {
+      table: 'research_papers',
+      event: 'INSERT',
+      callback: (payload) => {
+        if (searchResults) {
+          setSearchResults(prev => prev ? {
+            ...prev,
+            papers: [payload.new, ...prev.papers],
+            totalCount: prev.totalCount + 1
+          } : null);
+        }
+      }
+    }
+  ]);
 
   // Mock data for demonstration
   const mockPapers: ResearchPaper[] = [
@@ -67,6 +85,16 @@ export function useResearch() {
   ];
 
   const searchPapers = useCallback(async (query: string) => {
+    if (!query.trim()) return;
+
+    const cacheKey = `${query}-${JSON.stringify(filters)}`;
+    const cachedResult = getCachedResult(cacheKey);
+    
+    if (cachedResult) {
+      setSearchResults(cachedResult);
+      return;
+    }
+
     setLoading(true);
     
     try {
@@ -98,6 +126,7 @@ export function useResearch() {
       };
 
       setSearchResults(results);
+      setCachedResult(cacheKey, results);
 
       toast({
         title: 'Search Complete',
@@ -152,5 +181,6 @@ export function useResearch() {
     setFilters,
     searchPapers,
     bookmarkPaper,
+    isConnected,
   };
 }

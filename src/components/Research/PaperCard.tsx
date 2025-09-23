@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Bookmark, Download, ExternalLink, Sparkles, Star, Calendar, Users, BarChart3 } from 'lucide-react';
+import { Bookmark, Download, ExternalLink, Sparkles, Star, Calendar, Users, BarChart3, Eye, Brain } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PDFViewer } from '@/components/PDFViewer';
+import { EnhancedSummarization } from '@/components/AI/EnhancedSummarization';
 
 export interface ResearchPaper {
   id: string;
@@ -38,6 +40,8 @@ export const PaperCard = ({
   onDownload, 
   className 
 }: PaperCardProps) => {
+  const [isPDFViewerOpen, setIsPDFViewerOpen] = useState(false);
+  const [showEnhancedSummary, setShowEnhancedSummary] = useState(false);
   const sourceBadgeColor = {
     'arXiv': 'bg-orange-500/10 text-orange-600 border-orange-500/20',
     'PubMed': 'bg-green-500/10 text-green-600 border-green-500/20',
@@ -131,17 +135,14 @@ export const PaperCard = ({
               </Button>
             )}
 
-            {onSummarize && !paper.summary && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => onSummarize(paper.id)}
-                className="text-accent hover:text-accent/80"
-              >
-                <Sparkles className="w-4 h-4" />
-                Summarize
-              </Button>
-            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowEnhancedSummary(!showEnhancedSummary)}
+            >
+              <Brain className="w-4 h-4" />
+              AI Analysis
+            </Button>
 
             {onDownload && paper.pdfUrl && (
               <Button
@@ -154,16 +155,49 @@ export const PaperCard = ({
             )}
           </div>
 
-          {paper.url && (
-            <Button variant="ghost" size="sm" asChild>
-              <a href={paper.url} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-4 h-4" />
-                View
-              </a>
-            </Button>
-          )}
+          <div className="flex gap-2">
+            {paper.pdfUrl && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsPDFViewerOpen(true)}
+              >
+                <Eye className="w-4 h-4" />
+                PDF
+              </Button>
+            )}
+            
+            {paper.url && (
+              <Button variant="ghost" size="sm" asChild>
+                <a href={paper.url} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="w-4 h-4" />
+                  External
+                </a>
+              </Button>
+            )}
+          </div>
         </div>
+
+        {showEnhancedSummary && (
+          <div className="mt-4">
+            <EnhancedSummarization
+              paperId={paper.id}
+              title={paper.title}
+              abstract={paper.abstract || ''}
+              authors={paper.authors || []}
+            />
+          </div>
+        )}
       </CardContent>
+
+      {isPDFViewerOpen && paper.pdfUrl && (
+        <PDFViewer
+          isOpen={isPDFViewerOpen}
+          onClose={() => setIsPDFViewerOpen(false)}
+          pdfUrl={paper.pdfUrl}
+          title={paper.title}
+        />
+      )}
     </Card>
   );
 };

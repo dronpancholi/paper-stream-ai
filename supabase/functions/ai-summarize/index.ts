@@ -12,13 +12,14 @@ interface SummarizeRequest {
   text: string;
   apiProvider?: 'openai' | 'together' | 'huggingface';
   apiKey?: string;
+  enhanced?: boolean;
 }
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
 const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-async function summarizeWithOpenAI(text: string, apiKey: string) {
+async function summarizeWithOpenAI(text: string, apiKey: string, enhanced: boolean = false) {
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -30,33 +31,65 @@ async function summarizeWithOpenAI(text: string, apiKey: string) {
       messages: [
         {
           role: 'system',
-          content: `You are a research assistant specializing in academic paper analysis. 
-          Provide a comprehensive summary and critique of the given research paper text.
-          
-          Format your response as follows:
-          
-          **SUMMARY:**
-          [3-4 sentences summarizing the main findings, methodology, and conclusions]
-          
-          **KEY CONTRIBUTIONS:**
-          • [Main contribution 1]
-          • [Main contribution 2]
-          • [Main contribution 3]
-          
-          **METHODOLOGY:**
-          [Brief description of the research methodology]
-          
-          **CRITIQUE:**
-          **Strengths:**
-          • [Strength 1]
-          • [Strength 2]
-          
-          **Limitations:**
-          • [Limitation 1]
-          • [Limitation 2]
-          
-          **PEER REVIEW ASSESSMENT:**
-          [Assessment of the paper's rigor, novelty, and potential impact]`
+          content: enhanced ? 
+            `You are a senior research analyst specializing in academic paper evaluation. 
+            Provide a comprehensive, professional analysis of the given research paper.
+            
+            Format your response as follows:
+            
+            **SUMMARY:**
+            [4-5 sentences providing executive summary of findings, methodology, and significance]
+            
+            **KEY CONTRIBUTIONS:**
+            • [Main contribution 1 with specific details]
+            • [Main contribution 2 with impact assessment]
+            • [Main contribution 3 with novelty evaluation]
+            
+            **METHODOLOGY:**
+            [Detailed analysis of research approach, data collection, and analytical methods]
+            
+            **CRITIQUE:**
+            [In-depth evaluation covering strengths, weaknesses, and methodological rigor]
+            
+            **LIMITATIONS:**
+            • [Specific limitation 1 with implications]
+            • [Specific limitation 2 with suggested improvements]
+            • [Sample size, scope, or methodological concerns]
+            
+            **RECOMMENDATIONS:**
+            • [Future research direction 1]
+            • [Methodological improvement 1]
+            • [Practical application suggestion]
+            
+            **IMPACT:**
+            [Assessment of potential academic and practical impact, including citation potential and field advancement]` :
+            `You are a research assistant specializing in academic paper analysis. 
+            Provide a comprehensive summary and critique of the given research paper text.
+            
+            Format your response as follows:
+            
+            **SUMMARY:**
+            [3-4 sentences summarizing the main findings, methodology, and conclusions]
+            
+            **KEY CONTRIBUTIONS:**
+            • [Main contribution 1]
+            • [Main contribution 2]
+            • [Main contribution 3]
+            
+            **METHODOLOGY:**
+            [Brief description of the research methodology]
+            
+            **CRITIQUE:**
+            **Strengths:**
+            • [Strength 1]
+            • [Strength 2]
+            
+            **Limitations:**
+            • [Limitation 1]
+            • [Limitation 2]
+            
+            **PEER REVIEW ASSESSMENT:**
+            [Assessment of the paper's rigor, novelty, and potential impact]`
         },
         {
           role: 'user',
@@ -146,7 +179,7 @@ serve(async (req) => {
   }
 
   try {
-    const { paperId, text, apiProvider = 'huggingface', apiKey }: SummarizeRequest = await req.json();
+    const { paperId, text, apiProvider = 'huggingface', apiKey, enhanced = false }: SummarizeRequest = await req.json();
     
     if (!paperId || !text) {
       return new Response(
@@ -162,7 +195,7 @@ serve(async (req) => {
 
     try {
       if (apiProvider === 'openai' && apiKey) {
-        const result = await summarizeWithOpenAI(text, apiKey);
+        const result = await summarizeWithOpenAI(text, apiKey, enhanced);
         // Split summary and critique from the structured response
         const parts = result.split('**CRITIQUE:**');
         summary = parts[0]?.replace('**SUMMARY:**', '').trim() || result;

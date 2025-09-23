@@ -66,7 +66,9 @@ export const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button variant="outline">Sign In</Button>
+            <Button variant="outline" onClick={() => window.location.href = '/auth'}>
+              Sign In
+            </Button>
           )}
         </div>
       </div>
