@@ -1,5 +1,8 @@
-import { useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
+import { Home, AlertTriangle, ArrowLeft } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();
@@ -9,14 +12,37 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
-        <p className="mb-4 text-xl text-gray-600">Oops! Page not found</p>
-        <a href="/" className="text-blue-500 underline hover:text-blue-700">
-          Return to Home
-        </a>
-      </div>
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <Card className="w-full max-w-md">
+        <CardContent className="pt-6">
+          <div className="text-center space-y-4">
+            <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-6">
+              <AlertTriangle className="w-8 h-8 text-muted-foreground" />
+            </div>
+            <h1 className="text-4xl font-bold text-foreground">404</h1>
+            <div className="space-y-2">
+              <p className="text-xl text-foreground">Page not found</p>
+              <p className="text-sm text-muted-foreground">
+                The page you're looking for doesn't exist or has been moved.
+              </p>
+            </div>
+            <div className="flex gap-2 justify-center pt-4">
+              <Button variant="outline" asChild>
+                <Link to="/" className="flex items-center gap-2">
+                  <Home className="w-4 h-4" />
+                  Go Home
+                </Link>
+              </Button>
+              <Button asChild>
+                <Link to="/dashboard" className="flex items-center gap-2">
+                  <ArrowLeft className="w-4 h-4" />
+                  Back to Dashboard
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
