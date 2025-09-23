@@ -1,0 +1,170 @@
+import { useState, useCallback } from 'react';
+import { ResearchPaper } from '@/components/Research/PaperCard';
+import { SearchFiltersType } from '@/components/Research/SearchFilters';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+
+interface SearchResults {
+  papers: ResearchPaper[];
+  totalCount: number;
+  clusters?: Array<{ name: string; count: number; papers: ResearchPaper[] }>;
+}
+
+export function useResearch() {
+  const [searchResults, setSearchResults] = useState<SearchResults | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [filters, setFilters] = useState<SearchFiltersType>({});
+  const { toast } = useToast();
+
+  // Mock data for demonstration
+  const mockPapers: ResearchPaper[] = [
+    {
+      id: '1',
+      title: 'Deep Learning Applications in Medical Diagnosis: A Comprehensive Review',
+      authors: ['Dr. Sarah Johnson', 'Prof. Michael Chen', 'Dr. Emily Rodriguez'],
+      abstract: 'This comprehensive review examines the current state of deep learning applications in medical diagnosis, covering recent advances in computer vision, natural language processing, and predictive modeling for healthcare. We analyze 150+ studies published between 2020-2024, identifying key trends, challenges, and future opportunities in AI-driven medical diagnosis.',
+      source: 'PubMed',
+      year: 2024,
+      citationCount: 45,
+      journal: 'Nature Medicine',
+      doi: '10.1038/s41591-024-2847-2',
+      url: 'https://example.com/paper1',
+      pdfUrl: 'https://example.com/paper1.pdf',
+      impactFactor: 87.2,
+      isBookmarked: false,
+    },
+    {
+      id: '2',
+      title: 'Quantum Machine Learning Algorithms for Large-Scale Data Processing',
+      authors: ['Prof. David Kim', 'Dr. Lisa Wang', 'James Thompson'],
+      abstract: 'We present novel quantum machine learning algorithms designed for processing large-scale datasets efficiently. Our approach leverages quantum superposition and entanglement to achieve exponential speedup in specific classification and clustering tasks, with applications in finance, logistics, and scientific computing.',
+      source: 'arXiv',
+      year: 2024,
+      citationCount: 23,
+      journal: 'Physical Review A',
+      doi: '10.1103/PhysRevA.109.042615',
+      url: 'https://example.com/paper2',
+      pdfUrl: 'https://example.com/paper2.pdf',
+      impactFactor: 3.1,
+      isBookmarked: true,
+      summary: 'This paper introduces quantum algorithms that can process large datasets exponentially faster than classical methods, with particular strengths in pattern recognition and optimization problems.',
+    },
+    {
+      id: '3',
+      title: 'Climate Change Impact on Biodiversity: Modeling Ecosystem Responses',
+      authors: ['Dr. Maria Gonzalez', 'Prof. Robert Taylor', 'Dr. Anna Petrov', 'Dr. John Smith'],
+      abstract: 'Using advanced ecological modeling techniques, we analyze the projected impacts of climate change on global biodiversity patterns. Our models incorporate temperature, precipitation, and habitat fragmentation data to predict species distribution changes over the next 50 years.',
+      source: 'Semantic Scholar',
+      year: 2023,
+      citationCount: 78,
+      journal: 'Science',
+      doi: '10.1126/science.abq7890',
+      url: 'https://example.com/paper3',
+      pdfUrl: 'https://example.com/paper3.pdf',
+      impactFactor: 47.7,
+      isBookmarked: false,
+    },
+  ];
+
+  const searchPapers = useCallback(async (query: string) => {
+    setLoading(true);
+    
+    try {
+      // Save search query to database
+      const sessionId = crypto.randomUUID();
+      await supabase.from('search_queries').insert({
+        query_text: query,
+        filters: filters as any,
+        results_count: mockPapers.length,
+        session_id: sessionId,
+      });
+
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Filter mock papers based on query and filters
+      let filteredPapers = mockPapers.filter(paper =>
+        paper.title.toLowerCase().includes(query.toLowerCase()) ||
+        paper.abstract.toLowerCase().includes(query.toLowerCase()) ||
+        paper.authors.some(author => author.toLowerCase().includes(query.toLowerCase()))
+      );
+
+      // Apply filters
+      if (filters.author) {
+        filteredPapers = filteredPapers.filter(paper =>
+          paper.authors.some(author => 
+            author.toLowerCase().includes(filters.author!.toLowerCase())
+          )
+        );
+      }
+
+      if (filters.year) {
+        filteredPapers = filteredPapers.filter(paper =>
+          paper.year.toString() === filters.year
+        );
+      }
+
+      if (filters.source) {
+        filteredPapers = filteredPapers.filter(paper =>
+          paper.source === filters.source
+        );
+      }
+
+      if (filters.minCitations) {
+        filteredPapers = filteredPapers.filter(paper =>
+          (paper.citationCount || 0) >= filters.minCitations!
+        );
+      }
+
+      const results: SearchResults = {
+        papers: filteredPapers,
+        totalCount: filteredPapers.length,
+        clusters: [
+          { name: 'Machine Learning', count: 2, papers: filteredPapers.slice(0, 2) },
+          { name: 'Climate Science', count: 1, papers: filteredPapers.slice(2, 3) },
+          { name: 'Medical Research', count: 1, papers: filteredPapers.slice(0, 1) },
+        ],
+      };
+
+      setSearchResults(results);
+
+      toast({
+        title: 'Search Complete',
+        description: `Found ${results.totalCount} papers`,
+      });
+
+    } catch (error) {
+      console.error('Search error:', error);
+      toast({
+        title: 'Search Failed',
+        description: 'There was an error searching for papers. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [filters, toast]);
+
+  const bookmarkPaper = useCallback(async (paperId: string) => {
+    try {
+      // This would bookmark the paper in the database
+      console.log('Bookmarking paper:', paperId);
+      
+      toast({
+        title: 'Paper Bookmarked',
+        description: 'Paper has been added to your bookmarks',
+      });
+    } catch (error) {
+      console.error('Bookmark error:', error);
+    }
+  }, [toast]);
+
+  return {
+    searchResults,
+    loading,
+    filters,
+    setFilters,
+    searchPapers,
+    bookmarkPaper,
+  };
+}

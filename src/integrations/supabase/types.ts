@@ -14,7 +14,260 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      author_profiles: {
+        Row: {
+          affiliations: string[] | null
+          author_id: string | null
+          author_name: string
+          created_at: string
+          domains: string[] | null
+          h_index: number | null
+          id: string
+          profile_data: Json | null
+          total_citations: number | null
+          total_papers: number | null
+          updated_at: string
+        }
+        Insert: {
+          affiliations?: string[] | null
+          author_id?: string | null
+          author_name: string
+          created_at?: string
+          domains?: string[] | null
+          h_index?: number | null
+          id?: string
+          profile_data?: Json | null
+          total_citations?: number | null
+          total_papers?: number | null
+          updated_at?: string
+        }
+        Update: {
+          affiliations?: string[] | null
+          author_id?: string | null
+          author_name?: string
+          created_at?: string
+          domains?: string[] | null
+          h_index?: number | null
+          id?: string
+          profile_data?: Json | null
+          total_citations?: number | null
+          total_papers?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      bookmarks: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          paper_id: string
+          tags: string[] | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          paper_id: string
+          tags?: string[] | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          paper_id?: string
+          tags?: string[] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmarks_paper_id_fkey"
+            columns: ["paper_id"]
+            isOneToOne: false
+            referencedRelation: "research_papers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookmarks_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      paper_clusters: {
+        Row: {
+          cluster_name: string
+          created_at: string
+          description: string | null
+          id: string
+          keywords: string[] | null
+          paper_ids: string[] | null
+        }
+        Insert: {
+          cluster_name: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          keywords?: string[] | null
+          paper_ids?: string[] | null
+        }
+        Update: {
+          cluster_name?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          keywords?: string[] | null
+          paper_ids?: string[] | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          api_key_openai: string | null
+          api_key_together: string | null
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          preferences: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          api_key_openai?: string | null
+          api_key_together?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          preferences?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          api_key_openai?: string | null
+          api_key_together?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          preferences?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      research_papers: {
+        Row: {
+          abstract: string | null
+          authors: string[] | null
+          citation_count: number | null
+          created_at: string
+          critique: string | null
+          doi: string | null
+          id: string
+          impact_factor: number | null
+          journal: string | null
+          keywords: string[] | null
+          metadata: Json | null
+          paper_id: string
+          pdf_url: string | null
+          publication_date: string | null
+          source: string
+          summary: string | null
+          title: string
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          abstract?: string | null
+          authors?: string[] | null
+          citation_count?: number | null
+          created_at?: string
+          critique?: string | null
+          doi?: string | null
+          id?: string
+          impact_factor?: number | null
+          journal?: string | null
+          keywords?: string[] | null
+          metadata?: Json | null
+          paper_id: string
+          pdf_url?: string | null
+          publication_date?: string | null
+          source: string
+          summary?: string | null
+          title: string
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          abstract?: string | null
+          authors?: string[] | null
+          citation_count?: number | null
+          created_at?: string
+          critique?: string | null
+          doi?: string | null
+          id?: string
+          impact_factor?: number | null
+          journal?: string | null
+          keywords?: string[] | null
+          metadata?: Json | null
+          paper_id?: string
+          pdf_url?: string | null
+          publication_date?: string | null
+          source?: string
+          summary?: string | null
+          title?: string
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
+      search_queries: {
+        Row: {
+          created_at: string
+          filters: Json | null
+          id: string
+          query_text: string
+          results_count: number | null
+          session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          filters?: Json | null
+          id?: string
+          query_text: string
+          results_count?: number | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          filters?: Json | null
+          id?: string
+          query_text?: string
+          results_count?: number | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "search_queries_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
