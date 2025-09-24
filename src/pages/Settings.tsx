@@ -10,11 +10,13 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from 'next-themes';
-import { User, Bell, Shield, Database, Download, Trash2, Save, Key } from 'lucide-react';
+import { useFeedback } from '@/hooks/useFeedback';
+import { User, Bell, Shield, Database, Download, Trash2, Save, Key, Heart, MessageSquare, ThumbsUp, ThumbsDown } from 'lucide-react';
 
 export default function Settings() {
   const { user } = useAuth();
   const { theme, setTheme } = useTheme();
+  const { feedback, loading: feedbackLoading, deleteFeedback } = useFeedback();
   const [settings, setSettings] = useState({
     emailNotifications: true,
     browserNotifications: false,
@@ -212,6 +214,65 @@ export default function Settings() {
                   <Badge variant="outline">Active</Badge>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Heart className="w-5 h-5" />
+                My Feedback
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {feedbackLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+                </div>
+              ) : feedback.length > 0 ? (
+                <div className="space-y-3 max-h-60 overflow-y-auto">
+                  {feedback.map((item) => (
+                    <div key={item.id} className="p-3 bg-accent/5 rounded-lg border">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex-1 space-y-1">
+                          <div className="flex items-center gap-2">
+                            {item.is_liked ? (
+                              <ThumbsUp className="w-4 h-4 text-green-600" />
+                            ) : (
+                              <ThumbsDown className="w-4 h-4 text-red-600" />
+                            )}
+                            <span className="text-sm font-medium">
+                              {item.is_liked ? 'Liked' : 'Disliked'}
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(item.created_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                          {item.comment && (
+                            <div className="flex items-start gap-2">
+                              <MessageSquare className="w-3 h-3 text-muted-foreground mt-0.5" />
+                              <p className="text-xs text-muted-foreground">{item.comment}</p>
+                            </div>
+                          )}
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => deleteFeedback(item.paper_id)}
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  <Heart className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <p>No feedback submitted yet</p>
+                  <p className="text-sm">Start reviewing papers to see your feedback here</p>
+                </div>
+              )}
             </CardContent>
           </Card>
 

@@ -1,1 +1,38 @@
 project_id = "lrkhnpajcalpdfjvqyes"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[realtime]
+enabled = true
+ip_version = "ipv4"
+port = 54323
+
+[studio]
+enabled = true
+port = 54324
+api_url = "http://localhost:54321"
+
+[storage]
+enabled = true
+port = 54328
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+
+[functions.enhanced-grok-search]
+verify_jwt = false
+
+[functions.ai-summarize]
+verify_jwt = false

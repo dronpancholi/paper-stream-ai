@@ -108,12 +108,12 @@ export function useResearch() {
       });
 
       // Call enhanced search function
-      const { data, error } = await supabase.functions.invoke('enhanced-search', {
+      const { data, error } = await supabase.functions.invoke('enhanced-grok-search', {
         body: {
           query,
-          sources: ['arxiv', 'semantic_scholar', 'pubmed'],
+          sources: ['arxiv', 'semantic_scholar', 'pubmed', 'crossref', 'core'],
           filters,
-          limit: 50
+          limit: 30
         }
       });
 
@@ -121,7 +121,7 @@ export function useResearch() {
 
       const results: SearchResults = {
         papers: data.papers || [],
-        totalCount: data.totalCount || 0,
+        totalCount: data.total || 0,
         clusters: data.clusters || [],
       };
 

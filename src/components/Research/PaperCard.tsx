@@ -4,8 +4,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Bookmark, Download, ExternalLink, Sparkles, Star, Calendar, Users, BarChart3, Eye, Brain } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { PDFViewer } from '@/components/PDFViewer';
+import { EnhancedPDFViewer } from '@/components/Research/EnhancedPDFViewer';
 import { EnhancedSummarization } from '@/components/AI/EnhancedSummarization';
+import { FeedbackButton } from '@/components/Research/FeedbackButton';
 
 export interface ResearchPaper {
   id: string;
@@ -144,6 +145,8 @@ export const PaperCard = ({
               AI Analysis
             </Button>
 
+            <FeedbackButton paperId={paper.id} title={paper.title} />
+
             {onDownload && paper.pdfUrl && (
               <Button
                 variant="ghost"
@@ -190,12 +193,11 @@ export const PaperCard = ({
         )}
       </CardContent>
 
-      {isPDFViewerOpen && paper.pdfUrl && (
-        <PDFViewer
+      {isPDFViewerOpen && (
+        <EnhancedPDFViewer
           isOpen={isPDFViewerOpen}
           onClose={() => setIsPDFViewerOpen(false)}
-          pdfUrl={paper.pdfUrl}
-          title={paper.title}
+          paper={paper}
         />
       )}
     </Card>
