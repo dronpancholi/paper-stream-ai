@@ -18,40 +18,65 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const startTime = Date.now();
+  
   try {
-    const { query, sources = ['arxiv', 'semantic_scholar', 'pubmed'], filters = {}, limit = 20 }: SearchParams = await req.json();
+    const { query, sources = ['arxiv', 'semantic_scholar'], filters = {}, limit = 20 }: SearchParams = await req.json();
     
-    console.log('Enhanced search request:', { query, sources, filters, limit });
+    if (!query || query.trim().length < 2) {
+      return new Response(JSON.stringify({ 
+        error: 'Query too short', 
+        papers: [],
+        total: 0
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    console.log('Enhanced search request:', { query: query.substring(0, 50), sources, limit });
 
     const enhancedQuery = await enhanceQueryWithGrok(query);
-    console.log('Enhanced query:', enhancedQuery);
-
-    const searchPromises = sources.map(source => searchSource(source, enhancedQuery, filters, Math.ceil(limit / sources.length)));
+    
+    const searchPromises = sources.slice(0, 3).map(source => 
+      Promise.race([
+        searchSource(source, enhancedQuery, filters, Math.ceil(limit / sources.length)),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 8000))
+      ])
+    );
+    
     const results = await Promise.allSettled(searchPromises);
     
     let allPapers: any[] = [];
     results.forEach((result, index) => {
       if (result.status === 'fulfilled') {
         allPapers = [...allPapers, ...result.value];
-        console.log(`${sources[index]} returned ${result.value.length} papers`);
-      } else {
-        console.error(`Error from ${sources[index]}:`, result.reason);
       }
     });
+
+    if (allPapers.length === 0) {
+      return new Response(JSON.stringify({
+        papers: [],
+        total: 0,
+        message: 'No papers found for this query'
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
 
     const deduplicatedPapers = deduplicatePapers(allPapers);
     const sortedPapers = deduplicatedPapers
       .sort((a, b) => (b.citationCount || 0) - (a.citationCount || 0))
       .slice(0, limit);
 
-    const clusters = await generateClusters(sortedPapers);
+    console.log(`Search completed in ${Date.now() - startTime}ms, found ${sortedPapers.length} papers`);
 
     return new Response(JSON.stringify({
       papers: sortedPapers,
       total: sortedPapers.length,
-      clusters,
-      enhanced_query: enhancedQuery,
-      sources_used: sources
+      enhanced_query: enhancedQuery !== query ? enhancedQuery : undefined,
+      sources_used: sources,
+      processing_time: Date.now() - startTime
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
@@ -60,7 +85,9 @@ serve(async (req) => {
     console.error('Search error:', error);
     return new Response(JSON.stringify({ 
       error: 'Search failed', 
-      details: error.message 
+      details: error.message,
+      papers: [],
+      total: 0
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -70,12 +97,14 @@ serve(async (req) => {
 
 async function enhanceQueryWithGrok(query: string): Promise<string> {
   const grokApiKey = Deno.env.get('GROK_API_KEY');
-  if (!grokApiKey) {
-    console.log('Grok API key not found, using original query');
+  if (!grokApiKey || query.length < 5) {
     return query;
   }
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
+
     const response = await fetch('https://api.x.ai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -87,28 +116,31 @@ async function enhanceQueryWithGrok(query: string): Promise<string> {
         messages: [
           {
             role: 'system',
-            content: 'You are a research assistant that enhances academic search queries. Improve the given query by adding relevant synonyms, technical terms, and related keywords that would help find more comprehensive research papers. Return only the enhanced query, nothing else.'
+            content: 'Enhance this academic search query with relevant synonyms and technical terms. Keep it concise. Return only the enhanced query.'
           },
           {
             role: 'user',
-            content: `Enhance this research query: "${query}"`
+            content: query
           }
         ],
-        max_tokens: 100,
-        temperature: 0.3
-      })
+        max_tokens: 60,
+        temperature: 0.2
+      }),
+      signal: controller.signal
     });
 
+    clearTimeout(timeoutId);
+
     if (!response.ok) {
-      throw new Error(`Grok API error: ${response.status}`);
+      return query;
     }
 
     const data = await response.json();
-    const enhancedQuery = data.choices[0]?.message?.content?.trim() || query;
+    const enhancedQuery = data.choices[0]?.message?.content?.trim();
     
-    return enhancedQuery;
+    return enhancedQuery && enhancedQuery.length > 0 ? enhancedQuery : query;
   } catch (error) {
-    console.error('Grok enhancement error:', error);
+    console.log('Grok enhancement skipped:', error.message);
     return query;
   }
 }

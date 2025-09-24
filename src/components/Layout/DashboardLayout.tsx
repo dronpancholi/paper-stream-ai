@@ -1,23 +1,26 @@
-import React from 'react';
-import { Sidebar } from './Sidebar';
+import React, { memo } from 'react';
 import { Header } from './Header';
+import { Sidebar } from './Sidebar';
+import { OptimizedLayout } from './OptimizedLayout';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+export const DashboardLayout = memo<DashboardLayoutProps>(({ children }) => {
   return (
-    <div className="min-h-screen bg-background flex flex-col overflow-hidden">
+    <OptimizedLayout>
       <Header />
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto">
-          <div className="p-6 min-h-full">
+        <main className="flex-1 lg:ml-64 p-6 pt-20 will-change-contents">
+          <div className="transform-gpu">
             {children}
           </div>
         </main>
       </div>
-    </div>
+    </OptimizedLayout>
   );
-};
+});
+
+DashboardLayout.displayName = 'DashboardLayout';
