@@ -18,9 +18,9 @@ import {
   Zap
 } from 'lucide-react';
 import { useOptimizedSearch } from '@/hooks/useOptimizedSearch';
-import { PageSkeleton, CardSkeleton } from '@/components/LoadingStates';
+import { CardSkeleton } from '@/components/LoadingStates';
 import { SearchEmptyState, EmptyState } from '@/components/EmptyStates';
-import { LazyPaperCard } from '@/components/Performance/LazyComponents';
+import { PaperCard } from '@/components/Research/PaperCard';
 
 const OptimizedDashboard = memo(() => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -164,9 +164,7 @@ const OptimizedDashboard = memo(() => {
                 </div>
                 <div className="grid gap-4">
                   {results.map((paper) => (
-                    <Suspense key={paper.id} fallback={<CardSkeleton />}>
-                      <LazyPaperCard paper={paper} />
-                    </Suspense>
+                    <PaperCard key={paper.id} paper={paper} />
                   ))}
                 </div>
               </div>
