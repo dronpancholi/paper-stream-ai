@@ -70,6 +70,8 @@ export default {
         'elegant': 'var(--shadow-elegant)',
         'glow': 'var(--shadow-glow)',
         'card': 'var(--shadow-card)',
+        'glass': 'var(--shadow-glass)',
+        'glass-hover': 'var(--shadow-glass-hover)',
       },
       transitionTimingFunction: {
         'smooth': 'var(--transition-smooth)',

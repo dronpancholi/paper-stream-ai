@@ -193,8 +193,9 @@ All colors MUST be HSL.
 
   /* Liquid Glass Card */
   .liquid-card {
-    @apply backdrop-blur-md border border-white/20 shadow-glass;
+    @apply backdrop-blur-md border border-white/20;
     background: rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-glass);
     transition: var(--transition-glass);
   }
 
