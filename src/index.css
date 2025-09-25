@@ -42,20 +42,26 @@ All colors MUST be HSL.
     --input: 214 20% 90%;
     --ring: 214 84% 56%;
 
-    /* Professional gradients */
+/* Liquid Glass Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(214 84% 56%), hsl(214 84% 70%));
     --gradient-accent: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 76% 50%));
     --gradient-hero: linear-gradient(135deg, hsl(214 84% 56%) 0%, hsl(220 75% 40%) 50%, hsl(215 60% 25%) 100%);
     --gradient-subtle: linear-gradient(180deg, hsl(210 11% 98%), hsl(210 11% 96%));
+    --gradient-glass: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    --gradient-glass-hover: linear-gradient(145deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%);
 
-    /* Professional shadows */
+    /* Liquid Glass Shadows & Effects */
     --shadow-elegant: 0 10px 30px -10px hsl(214 84% 56% / 0.15);
     --shadow-glow: 0 0 40px hsl(214 84% 70% / 0.2);
     --shadow-card: 0 4px 20px -4px hsl(215 25% 15% / 0.08);
+    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    --shadow-glass-hover: 0 15px 35px 0 rgba(31, 38, 135, 0.4);
+    --shadow-inset: inset 0 1px 0 rgba(255,255,255,0.1);
 
-    /* Professional animations */
+    /* 3D Dynamic Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-glass: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
     --radius: 0.75rem;
 
@@ -122,5 +128,79 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Liquid Glass Button Effect */
+  .glass-button {
+    @apply relative overflow-hidden backdrop-blur-sm;
+    background: var(--gradient-glass);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow-glass), var(--shadow-inset);
+    transition: var(--transition-glass);
+  }
+
+  .glass-button:hover {
+    background: var(--gradient-glass-hover);
+    box-shadow: var(--shadow-glass-hover), var(--shadow-inset);
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  .glass-button:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  /* 3D Card Effect */
+  .card-3d {
+    @apply transition-all duration-300;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+
+  .card-3d:hover {
+    transform: translateZ(8px) rotateX(2deg) translateY(-4px);
+    box-shadow: var(--shadow-elegant);
+  }
+
+  /* Glowing Accent */
+  .glow-accent {
+    @apply relative;
+  }
+
+  .glow-accent::before {
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    content: '';
+    background: var(--gradient-accent);
+    border-radius: inherit;
+    filter: blur(20px);
+    z-index: -1;
+  }
+
+  .glow-accent:hover::before {
+    @apply opacity-30;
+  }
+
+  /* Floating Animation */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .floating {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Liquid Glass Card */
+  .liquid-card {
+    @apply backdrop-blur-md border border-white/20 shadow-glass;
+    background: rgba(255, 255, 255, 0.1);
+    transition: var(--transition-glass);
+  }
+
+  .liquid-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: var(--shadow-glass-hover);
+    transform: translateY(-2px);
   }
 }

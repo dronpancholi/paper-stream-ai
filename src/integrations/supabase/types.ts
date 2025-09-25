@@ -98,6 +98,33 @@ export type Database = {
           },
         ]
       }
+      likes: {
+        Row: {
+          created_at: string
+          id: string
+          paper_id: string
+          updated_at: string
+          user_id: string
+          vote: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          paper_id: string
+          updated_at?: string
+          user_id: string
+          vote: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          paper_id?: string
+          updated_at?: string
+          user_id?: string
+          vote?: string
+        }
+        Relationships: []
+      }
       paper_clusters: {
         Row: {
           cluster_name: string
@@ -189,6 +216,36 @@ export type Database = {
           display_name?: string | null
           id?: string
           preferences?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ratings: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          paper_id: string
+          rating: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          paper_id: string
+          rating: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          paper_id?: string
+          rating?: number
           updated_at?: string
           user_id?: string
         }
