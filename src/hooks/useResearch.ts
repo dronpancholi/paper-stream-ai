@@ -5,6 +5,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useSearchCache, useRealTimeUpdates } from '@/hooks/useRealTimeUpdates';
 
+// Export the ResearchPaper type for use in other components
+export type { ResearchPaper } from '@/components/Research/PaperCard';
+
 interface SearchResults {
   papers: ResearchPaper[];
   totalCount: number;

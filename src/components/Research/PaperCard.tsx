@@ -24,6 +24,7 @@ export interface ResearchPaper {
   critique?: string;
   impactFactor?: number;
   isBookmarked?: boolean;
+  keywords?: string[];
 }
 
 interface PaperCardProps {

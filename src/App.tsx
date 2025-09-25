@@ -7,9 +7,10 @@ import { SecurityProvider } from "@/components/Security/SecurityProvider";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
-import OptimizedDashboard from "./pages/OptimizedDashboard";
+import Dashboard from "./pages/Dashboard";
 import Demo from "./pages/Demo";
 import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
 import MyPages from "./pages/MyPages";
 import Bookmarks from "./pages/Bookmarks";
 import History from "./pages/History";
@@ -46,9 +47,10 @@ const App = () => (
             >
               <Routes>
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/dashboard" element={<OptimizedDashboard />} />
+                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/demo" element={<Demo />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/my-pages" element={<MyPages />} />
                 <Route path="/bookmarks" element={<Bookmarks />} />
                 <Route path="/history" element={<History />} />

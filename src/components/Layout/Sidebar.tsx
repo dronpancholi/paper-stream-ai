@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Search, BookOpen, Star, Clock, Settings, BarChart3, FileText, Users } from 'lucide-react';
+import { Search, BookOpen, Star, Clock, Settings, BarChart3, FileText, Users, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -15,6 +15,7 @@ const navigation = [
 ];
 
 const bottomNavigation = [
+  { name: 'Profile', href: '/profile', icon: User },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];
 
@@ -54,11 +55,15 @@ export const Sidebar = () => {
         <div className="space-y-2">
           {bottomNavigation.map((item) => {
             const Icon = item.icon;
+            const isActive = currentPath === item.href;
             return (
               <Button
                 key={item.name}
-                variant="ghost"
-                className="w-full justify-start gap-3 text-foreground hover:text-foreground"
+                variant={isActive ? 'default' : 'ghost'}
+                className={cn(
+                  'w-full justify-start gap-3 text-foreground hover:text-foreground',
+                  isActive && 'bg-gradient-primary text-white hover:text-white'
+                )}
                 asChild
               >
                 <Link to={item.href}>
