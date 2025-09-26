@@ -156,14 +156,11 @@ export default function MyPapersPage() {
     return (
       <DashboardLayout>
         <EmptyState
-          icon={FileText}
+          type="papers"
           title="Sign In Required"
           description="Please sign in to view your saved papers."
-          action={
-            <Button onClick={() => window.location.href = '/auth'}>
-              Sign In
-            </Button>
-          }
+          actionLabel="Sign In"
+          onAction={() => window.location.href = '/auth'}
         />
       </DashboardLayout>
     );
@@ -225,14 +222,11 @@ export default function MyPapersPage() {
 
         {bookmarkedPapers.length === 0 ? (
           <EmptyState
-            icon={FileText}
+            type="bookmarks"
             title="No Saved Papers"
             description="Papers you bookmark will appear here. Start by searching and saving papers you want to reference later."
-            action={
-              <Button onClick={() => window.location.href = '/search'}>
-                Search Papers
-              </Button>
-            }
+            actionLabel="Search Papers"
+            onAction={() => window.location.href = '/search'}
           />
         ) : (
           <>

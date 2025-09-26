@@ -10,7 +10,8 @@ import LandingPage from "./pages/LandingPage";
 import SearchPage from "./pages/SearchPage";
 import MyPapersPage from "./pages/MyPapersPage";
 import PaperViewerPage from "./pages/PaperViewerPage";
-import Demo from "./pages/Demo";
+import DemoPage from "./pages/DemoPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import MyPages from "./pages/MyPages";
@@ -54,13 +55,13 @@ const App = () => (
                 <Route path="/papers/:paperId" element={<PaperViewerPage />} />
                 <Route path="/bookmarks" element={<Bookmarks />} />
                 <Route path="/history" element={<History />} />
-                <Route path="/analysis" element={<Analysis />} />
+                <Route path="/analysis" element={<AnalyticsPage />} />
                 <Route path="/authors" element={<AuthorsPage />} />
                 <Route path="/authors/:authorId" element={<div>Author Detail Route</div>} />
                 <Route path="/clusters" element={<ClustersPage />} />
                 <Route path="/clusters/:clusterId" element={<div>Cluster Detail Route</div>} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/demo" element={<Demo />} />
+                <Route path="/demo" element={<DemoPage />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="*" element={<NotFound />} />
