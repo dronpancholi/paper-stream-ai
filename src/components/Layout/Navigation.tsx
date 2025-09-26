@@ -17,6 +17,7 @@ import {
   LogOut
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { MobileNavigation } from './MobileNavigation';
 
 const navigationItems = [
   { label: 'Search', href: '/search', icon: Search },
@@ -54,7 +55,7 @@ export const Navigation: React.FC = () => {
             </Badge>
           </Link>
 
-          {/* Navigation Items */}
+          {/* Navigation Items - Desktop */}
           <div className="hidden md:flex items-center gap-1">
             {navigationItems.map((item) => {
               const isActive = location.pathname === item.href;
@@ -80,8 +81,11 @@ export const Navigation: React.FC = () => {
             })}
           </div>
 
-          {/* User Menu */}
-          <div className="flex items-center gap-2">
+          {/* Mobile Navigation */}
+          <MobileNavigation />
+
+          {/* User Menu - Desktop */}
+          <div className="hidden md:flex items-center gap-2">
             {user ? (
               <>
                 <Button variant="ghost" size="sm" asChild>

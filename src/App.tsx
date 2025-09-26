@@ -6,6 +6,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SecurityProvider } from "@/components/Security/SecurityProvider";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { PageTransition } from "@/components/Layout/PageTransition";
+import { RouteGuard } from "@/components/Layout/RouteGuard";
+import { NavigationWrapper } from "@/components/Layout/NavigationWrapper";
 import LandingPage from "./pages/LandingPage";
 import SearchPage from "./pages/SearchPage";
 import MyPapersPage from "./pages/MyPapersPage";
@@ -18,10 +21,7 @@ import PrivacyPage from "./pages/PrivacyPage";
 import HistoryPage from "./pages/HistoryPage";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
-import MyPages from "./pages/MyPages";
 import Bookmarks from "./pages/Bookmarks";
-import History from "./pages/History";
-import Analysis from "./pages/Analysis";
 import AuthorsPage from "./pages/AuthorsPage";
 import AuthorDetailPage from "./pages/AuthorDetailPage";
 import ClustersPage from "./pages/ClustersPage";
@@ -54,27 +54,30 @@ const App = () => (
                 v7_relativeSplatPath: true,
               }}
             >
-              <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/search" element={<SearchPage />} />
-                <Route path="/papers" element={<MyPapersPage />} />
-                <Route path="/papers/:paperId" element={<PaperViewerPage />} />
-                <Route path="/bookmarks" element={<Bookmarks />} />
-                <Route path="/history" element={<HistoryPage />} />
-                <Route path="/analysis" element={<AnalyticsPage />} />
-                <Route path="/authors" element={<AuthorsPage />} />
-                <Route path="/authors/:authorId" element={<AuthorDetailPage />} />
-                <Route path="/clusters" element={<ClustersPage />} />
-                <Route path="/clusters/:clusterId" element={<ClusterDetailPage />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/demo" element={<DemoPage />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/roadmap" element={<RoadmapPage />} />
-                <Route path="/terms" element={<TermsPage />} />
-                <Route path="/privacy" element={<PrivacyPage />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <NavigationWrapper />
+              <PageTransition>
+                <Routes>
+                  <Route path="/" element={<LandingPage />} />
+                  <Route path="/search" element={<RouteGuard><SearchPage /></RouteGuard>} />
+                  <Route path="/papers" element={<RouteGuard><MyPapersPage /></RouteGuard>} />
+                  <Route path="/papers/:paperId" element={<RouteGuard><PaperViewerPage /></RouteGuard>} />
+                  <Route path="/bookmarks" element={<RouteGuard><Bookmarks /></RouteGuard>} />
+                  <Route path="/history" element={<RouteGuard><HistoryPage /></RouteGuard>} />
+                  <Route path="/analysis" element={<RouteGuard><AnalyticsPage /></RouteGuard>} />
+                  <Route path="/authors" element={<RouteGuard><AuthorsPage /></RouteGuard>} />
+                  <Route path="/authors/:authorId" element={<RouteGuard><AuthorDetailPage /></RouteGuard>} />
+                  <Route path="/clusters" element={<RouteGuard><ClustersPage /></RouteGuard>} />
+                  <Route path="/clusters/:clusterId" element={<RouteGuard><ClusterDetailPage /></RouteGuard>} />
+                  <Route path="/profile" element={<RouteGuard><Profile /></RouteGuard>} />
+                  <Route path="/demo" element={<RouteGuard><DemoPage /></RouteGuard>} />
+                  <Route path="/settings" element={<RouteGuard><Settings /></RouteGuard>} />
+                  <Route path="/roadmap" element={<RoadmapPage />} />
+                  <Route path="/terms" element={<TermsPage />} />
+                  <Route path="/privacy" element={<PrivacyPage />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </PageTransition>
             </BrowserRouter>
           </TooltipProvider>
         </SecurityProvider>

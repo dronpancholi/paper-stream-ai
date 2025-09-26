@@ -123,8 +123,8 @@ export default function LandingPage() {
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>
-            <Button variant="outline" size="lg" className="border-white/20 text-white hover:bg-white/10 text-lg px-8 py-6">
-              Watch Demo
+            <Button asChild variant="outline" size="lg" className="border-white/20 text-white hover:bg-white/10 text-lg px-8 py-6">
+              <Link to="/demo">Watch Demo</Link>
             </Button>
           </div>
         </div>
@@ -218,16 +218,16 @@ export default function LandingPage() {
                 <span className="text-xl font-bold">i-SMART Research Scholar</span>
               </div>
               <p className="text-muted-foreground">
-                AI-powered research assistant built by students for students.
+                AI-powered research discovery platform built by students for the global research community.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Platform</h4>
+              <h4 className="font-semibold mb-4">Features</h4>
               <div className="space-y-2 text-muted-foreground">
-                <Link to="/roadmap" className="block hover:text-primary">Roadmap</Link>
-                <Link to="/demo" className="block hover:text-primary">Demo</Link>
-                <Link to="/search" className="block hover:text-primary">Search</Link>
-                <Link to="/authors" className="block hover:text-primary">Authors</Link>
+                <Link to="/search" className="block hover:text-primary">Smart Search</Link>
+                <Link to="/analysis" className="block hover:text-primary">Analytics</Link>
+                <Link to="/authors" className="block hover:text-primary">Author Profiles</Link>
+                <Link to="/clusters" className="block hover:text-primary">Research Clusters</Link>
               </div>
             </div>
             <div>

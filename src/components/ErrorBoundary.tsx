@@ -2,6 +2,7 @@ import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Props {
   children: ReactNode;
@@ -22,48 +23,75 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
+    console.error('Application Error Boundary caught an error:', error, errorInfo);
+    
+    // Report to error tracking service in production
+    if (process.env.NODE_ENV === 'production') {
+      // Integration with error tracking service would go here
+    }
   }
+
+  private handleRefresh = () => {
+    this.setState({ hasError: false, error: undefined });
+    window.location.reload();
+  };
+
+  private handleGoHome = () => {
+    this.setState({ hasError: false, error: undefined });
+    window.location.href = '/';
+  };
 
   public render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-background flex items-center justify-center p-6">
-          <Card className="w-full max-w-md">
+        <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-6">
+          <Card className="w-full max-w-lg liquid-card">
             <CardHeader className="text-center">
-              <div className="mx-auto w-12 h-12 bg-destructive/10 rounded-full flex items-center justify-center mb-4">
-                <AlertTriangle className="w-6 h-6 text-destructive" />
+              <div className="mx-auto w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mb-4">
+                <AlertTriangle className="w-8 h-8 text-destructive" />
               </div>
-              <CardTitle className="text-xl">Something went wrong</CardTitle>
+              <CardTitle className="text-2xl">Oops! Something went wrong</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground text-center">
-                An unexpected error has occurred. Please try refreshing the page or go back to the homepage.
+            <CardContent className="space-y-6">
+              <p className="text-muted-foreground text-center leading-relaxed">
+                We encountered an unexpected error while loading this page. 
+                This has been logged and we'll work on fixing it.
               </p>
-              {this.state.error && (
-                <details className="text-xs bg-muted p-3 rounded">
-                  <summary className="cursor-pointer">Error details</summary>
-                  <pre className="mt-2 whitespace-pre-wrap">
+              
+              {process.env.NODE_ENV === 'development' && this.state.error && (
+                <details className="text-xs bg-muted/50 p-4 rounded-lg border">
+                  <summary className="cursor-pointer font-medium mb-2">
+                    Error Details (Development Mode)
+                  </summary>
+                  <pre className="mt-2 whitespace-pre-wrap overflow-auto max-h-48 text-xs">
                     {this.state.error.toString()}
+                    {this.state.error.stack && '\n\n' + this.state.error.stack}
                   </pre>
                 </details>
               )}
-              <div className="flex gap-2 justify-center">
+              
+              <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+                <Button
+                  onClick={this.handleRefresh}
+                  className="flex items-center gap-2"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  Try Again
+                </Button>
                 <Button
                   variant="outline"
-                  onClick={() => window.location.href = '/'}
+                  onClick={this.handleGoHome}
                   className="flex items-center gap-2"
                 >
                   <Home className="w-4 h-4" />
                   Go Home
                 </Button>
-                <Button
-                  onClick={() => window.location.reload()}
-                  className="flex items-center gap-2"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                  Refresh
-                </Button>
+              </div>
+
+              <div className="text-center pt-4 border-t">
+                <p className="text-sm text-muted-foreground">
+                  If this problem persists, please contact support
+                </p>
               </div>
             </CardContent>
           </Card>
