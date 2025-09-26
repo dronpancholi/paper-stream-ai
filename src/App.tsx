@@ -12,6 +12,10 @@ import MyPapersPage from "./pages/MyPapersPage";
 import PaperViewerPage from "./pages/PaperViewerPage";
 import DemoPage from "./pages/DemoPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
+import RoadmapPage from "./pages/RoadmapPage";
+import TermsPage from "./pages/TermsPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import HistoryPage from "./pages/HistoryPage";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import MyPages from "./pages/MyPages";
@@ -54,7 +58,7 @@ const App = () => (
                 <Route path="/papers" element={<MyPapersPage />} />
                 <Route path="/papers/:paperId" element={<PaperViewerPage />} />
                 <Route path="/bookmarks" element={<Bookmarks />} />
-                <Route path="/history" element={<History />} />
+                <Route path="/history" element={<HistoryPage />} />
                 <Route path="/analysis" element={<AnalyticsPage />} />
                 <Route path="/authors" element={<AuthorsPage />} />
                 <Route path="/authors/:authorId" element={<div>Author Detail Route</div>} />
@@ -63,6 +67,9 @@ const App = () => (
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/demo" element={<DemoPage />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/roadmap" element={<RoadmapPage />} />
+                <Route path="/terms" element={<TermsPage />} />
+                <Route path="/privacy" element={<PrivacyPage />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

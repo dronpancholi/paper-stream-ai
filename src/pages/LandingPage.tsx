@@ -81,7 +81,7 @@ export default function LandingPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Brain className="w-8 h-8 text-primary-glow" />
-            <span className="text-2xl font-bold">ResearchAI</span>
+            <span className="text-2xl font-bold">i-SMART Research Scholar</span>
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" className="text-white hover:bg-white/10" asChild>
@@ -106,18 +106,19 @@ export default function LandingPage() {
           </Badge>
           
           <h1 className="text-6xl font-bold leading-tight">
-            Accelerate Your Research with
-            <span className="bg-gradient-to-r from-primary-glow to-accent-glow bg-clip-text text-transparent"> AI-Powered</span> Discovery
+            <span className="bg-gradient-to-r from-primary-glow to-accent-glow bg-clip-text text-transparent">i-SMART</span> Research Scholar
+            <br />
+            <span className="text-4xl">AI-Powered Research Assistant</span>
           </h1>
           
           <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
-            Search millions of research papers, get AI summaries, discover patterns, and organize your research 
-            with the most advanced academic discovery platform.
+            Built by students of Government Polytechnic Ahmedabad. Access millions of research papers, 
+            get intelligent summaries, discover collaboration networks, and accelerate your academic research with advanced AI.
           </p>
           
           <div className="flex items-center justify-center gap-4 pt-8">
             <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6">
-              <Link to="/dashboard">
+              <Link to="/search">
                 Start Researching
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
@@ -214,42 +215,43 @@ export default function LandingPage() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Brain className="w-6 h-6 text-primary" />
-                <span className="text-xl font-bold">ResearchAI</span>
+                <span className="text-xl font-bold">i-SMART Research Scholar</span>
               </div>
               <p className="text-muted-foreground">
-                The most advanced research discovery platform powered by AI.
+                AI-powered research assistant built by students for students.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Product</h4>
+              <h4 className="font-semibold mb-4">Platform</h4>
               <div className="space-y-2 text-muted-foreground">
-                <div>Features</div>
-                <div>Demo</div>
-                <div>API</div>
-                <div>Documentation</div>
+                <Link to="/roadmap" className="block hover:text-primary">Roadmap</Link>
+                <Link to="/demo" className="block hover:text-primary">Demo</Link>
+                <Link to="/search" className="block hover:text-primary">Search</Link>
+                <Link to="/authors" className="block hover:text-primary">Authors</Link>
               </div>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Company</h4>
+              <h4 className="font-semibold mb-4">Institution</h4>
               <div className="space-y-2 text-muted-foreground">
-                <div>About</div>
-                <div>Blog</div>
-                <div>Careers</div>
-                <div>Contact</div>
+                <div>Government Polytechnic Ahmedabad</div>
+                <div>Student Project</div>
+                <div>Hackathon 2024</div>
+                <div>Contact Team</div>
               </div>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Legal</h4>
               <div className="space-y-2 text-muted-foreground">
-                <div>Privacy</div>
-                <div>Terms</div>
-                <div>Security</div>
-                <div>Compliance</div>
+                <Link to="/privacy" className="block hover:text-primary">Privacy Policy</Link>
+                <Link to="/terms" className="block hover:text-primary">Terms of Service</Link>
+                <div>Open Source</div>
+                <div>Academic Use</div>
               </div>
             </div>
           </div>
           <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 ResearchAI. All rights reserved.</p>
+            <p>&copy; 2024 i-SMART Research Scholar. Built by students of Government Polytechnic Ahmedabad.</p>
+            <p className="text-sm mt-2">Empowering student researchers with AI-powered discovery tools.</p>
           </div>
         </div>
       </footer>

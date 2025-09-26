@@ -31,6 +31,9 @@ file_size_limit = "50MiB"
 enabled = true
 site_url = "http://localhost:3000"
 
+[functions.paper-download]
+verify_jwt = false
+
 [functions.download-proxy]
 verify_jwt = false
 

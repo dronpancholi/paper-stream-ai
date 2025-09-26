@@ -24,7 +24,7 @@ import { useLikes } from '@/hooks/useLikes';
 import { useRatings } from '@/hooks/useRatings';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { ProfessionalPDFViewer } from './ProfessionalPDFViewer';
+import { UnifiedPaperViewer } from './UnifiedPaperViewer';
 
 export interface SearchResult {
   id: string;
@@ -340,7 +340,7 @@ export const EnhancedPaperCard: React.FC<EnhancedPaperCardProps> = ({
 
       {/* PDF Viewer */}
       {viewerOpen && paper.pdfUrl && (
-        <ProfessionalPDFViewer
+        <UnifiedPaperViewer
           isOpen={viewerOpen}
           onClose={() => setViewerOpen(false)}
           paper={{

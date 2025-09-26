@@ -19,7 +19,7 @@ const Index = () => {
             className="bg-white text-primary hover:bg-white/90"
             asChild
           >
-            <a href="/dashboard">
+            <a href="/search">
               Try Platform
               <ArrowRight className="w-4 h-4 ml-1" />
             </a>

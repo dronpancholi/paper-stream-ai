@@ -89,7 +89,7 @@ export const UnifiedPaperViewer: React.FC<UnifiedPaperViewerProps> = ({
 
     try {
       // Use server-side proxy for download to avoid CORS issues
-      const response = await fetch(`/api/papers/${paper.id}/download`);
+      const response = await fetch(`/api/papers/${paper.id}/download?url=${encodeURIComponent(paper.pdfUrl)}`);
       if (!response.ok) {
         throw new Error('Download failed');
       }
