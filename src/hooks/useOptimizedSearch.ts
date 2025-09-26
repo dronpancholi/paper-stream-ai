@@ -32,7 +32,7 @@ export const useOptimizedSearch = () => {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('enhanced-grok-search', {
+      const { data, error } = await supabase.functions.invoke('enhanced-search', {
         body: {
           query: query.trim(),
           sources,

@@ -195,7 +195,7 @@ serve(async (req) => {
 
     if (filters?.author) {
       filteredPapers = filteredPapers.filter(paper =>
-        paper.authors?.some(author => 
+        paper.authors?.some((author: string) => 
           author.toLowerCase().includes(filters.author!.toLowerCase())
         )
       );
@@ -243,7 +243,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Search papers error:', error);
     return new Response(
-      JSON.stringify({ error: 'Internal server error', details: error.message }),
+      JSON.stringify({ error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

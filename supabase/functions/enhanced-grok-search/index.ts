@@ -85,7 +85,7 @@ serve(async (req) => {
     console.error('Search error:', error);
     return new Response(JSON.stringify({ 
       error: 'Search failed', 
-      details: error.message,
+      details: error instanceof Error ? error.message : 'Unknown error',
       papers: [],
       total: 0
     }), {
@@ -140,7 +140,7 @@ async function enhanceQueryWithGrok(query: string): Promise<string> {
     
     return enhancedQuery && enhancedQuery.length > 0 ? enhancedQuery : query;
   } catch (error) {
-    console.log('Grok enhancement skipped:', error.message);
+    console.log('Grok enhancement skipped:', error instanceof Error ? error.message : 'Unknown error');
     return query;
   }
 }

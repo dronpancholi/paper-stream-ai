@@ -7,7 +7,9 @@ import { SecurityProvider } from "@/components/Security/SecurityProvider";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
-import Dashboard from "./pages/Dashboard";
+import SearchPage from "./pages/SearchPage";
+import MyPapersPage from "./pages/MyPapersPage";
+import PaperViewerPage from "./pages/PaperViewerPage";
 import Demo from "./pages/Demo";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
@@ -47,17 +49,20 @@ const App = () => (
             >
               <Routes>
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/demo" element={<Demo />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/my-pages" element={<MyPages />} />
+                <Route path="/search" element={<SearchPage />} />
+                <Route path="/papers" element={<MyPapersPage />} />
+                <Route path="/papers/:paperId" element={<PaperViewerPage />} />
                 <Route path="/bookmarks" element={<Bookmarks />} />
                 <Route path="/history" element={<History />} />
                 <Route path="/analysis" element={<Analysis />} />
                 <Route path="/authors" element={<AuthorsPage />} />
+                <Route path="/authors/:authorId" element={<div>Author Detail Route</div>} />
                 <Route path="/clusters" element={<ClustersPage />} />
+                <Route path="/clusters/:clusterId" element={<div>Cluster Detail Route</div>} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/demo" element={<Demo />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/auth" element={<Auth />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>

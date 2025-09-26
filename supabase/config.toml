@@ -31,6 +31,9 @@ file_size_limit = "50MiB"
 enabled = true
 site_url = "http://localhost:3000"
 
+[functions.enhanced-search]
+verify_jwt = false
+
 [functions.enhanced-grok-search]
 verify_jwt = false
 
