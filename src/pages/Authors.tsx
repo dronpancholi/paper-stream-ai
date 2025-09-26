@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '@/components/Layout/DashboardLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,10 +16,12 @@ import {
   Building,
   ExternalLink,
   Star,
-  MapPin
+  MapPin,
+  ArrowLeft
 } from 'lucide-react';
 
 export default function Authors() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
 
   const authors = [
@@ -119,19 +122,46 @@ export default function Authors() {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
 
+  const handleBackToHome = () => {
+    navigate(-1);
+  };
+
+  const handleViewAuthor = (authorId: string) => {
+    navigate(`/authors/${authorId}`);
+  };
+
+  const handleViewPapers = (authorId: string) => {
+    navigate(`/search?author=${encodeURIComponent(authorId)}`);
+  };
+
+  const handleAnalytics = (authorId: string) => {
+    navigate(`/analysis?author=${encodeURIComponent(authorId)}`);
+  };
+
   return (
     <DashboardLayout>
       <div className="space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold flex items-center gap-3">
-              <Users className="w-8 h-8 text-primary" />
-              Author Profiles
-            </h1>
-            <p className="text-muted-foreground">
-              Discover and follow leading researchers in your field
-            </p>
+          <div className="flex items-center gap-4">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleBackToHome}
+              className="gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
+            <div>
+              <h1 className="text-3xl font-bold flex items-center gap-3">
+                <Users className="w-8 h-8 text-primary" />
+                Author Profiles
+              </h1>
+              <p className="text-muted-foreground">
+                Discover and follow leading researchers in your field
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="outline" className="gap-2">
@@ -200,7 +230,10 @@ export default function Authors() {
                       <div className="flex-1 space-y-4">
                         <div className="flex items-start justify-between">
                           <div>
-                            <h3 className="text-xl font-semibold hover:text-primary cursor-pointer">
+                            <h3 
+                              className="text-xl font-semibold hover:text-primary cursor-pointer"
+                              onClick={() => handleViewAuthor(author.id)}
+                            >
                               {author.name}
                             </h3>
                             <div className="flex items-center gap-2 text-muted-foreground">
@@ -256,11 +289,21 @@ export default function Authors() {
                         <div className="flex items-center justify-between text-sm text-muted-foreground">
                           <span>{author.recentPapers} papers in the last 6 months</span>
                           <div className="flex items-center gap-2">
-                            <Button variant="ghost" size="sm" className="gap-2">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="gap-2"
+                              onClick={() => handleViewPapers(author.id)}
+                            >
                               <BookOpen className="w-4 h-4" />
                               View Papers
                             </Button>
-                            <Button variant="ghost" size="sm" className="gap-2">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="gap-2"
+                              onClick={() => handleAnalytics(author.id)}
+                            >
                               <TrendingUp className="w-4 h-4" />
                               Analytics
                             </Button>

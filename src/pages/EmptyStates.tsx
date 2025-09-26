@@ -79,18 +79,18 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
       case 'authors':
         return {
           icon: Users,
-          title: title || 'No author profiles found',
-          description: description || 'Author profiles will be discovered as you explore research papers.',
-          actionLabel: actionLabel || 'Find Authors',
+          title: title || 'Exploring Author Profiles',
+          description: description || 'Discover leading researchers and track their latest work.',
+          actionLabel: actionLabel || 'Search Papers',
           actionIcon: Search
         };
 
       case 'clusters':
         return {
           icon: Layers,
-          title: title || 'No research clusters',
-          description: description || 'Research clusters are automatically generated from your paper collection.',
-          actionLabel: actionLabel || 'Add Papers',
+          title: title || 'Research Clusters Available',
+          description: description || 'Explore AI-generated research clusters and thematic groups.',
+          actionLabel: actionLabel || 'Find Papers',
           actionIcon: BookOpen
         };
 

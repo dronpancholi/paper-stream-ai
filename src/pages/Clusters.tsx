@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '@/components/Layout/DashboardLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,10 +17,12 @@ import {
   Network,
   TrendingUp,
   Brain,
-  Sparkles
+  Sparkles,
+  ArrowLeft
 } from 'lucide-react';
 
 export default function Clusters() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
 
   const clusters = [
@@ -139,26 +142,75 @@ export default function Clusters() {
     }
   };
 
+  const handleViewCluster = (clusterId: string) => {
+    navigate(`/clusters/${clusterId}`);
+  };
+
+  const handleShareCluster = async (cluster: any) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: cluster.name,
+          text: cluster.description,
+          url: window.location.href + `/${cluster.id}`
+        });
+      } catch (error) {
+        console.log('Share cancelled');
+      }
+    } else {
+      const shareUrl = window.location.href + `/${cluster.id}`;
+      await navigator.clipboard.writeText(shareUrl);
+    }
+  };
+
+  const handleDownloadCluster = (cluster: any) => {
+    const dataStr = JSON.stringify(cluster, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${cluster.name.replace(/\s+/g, '_')}_cluster.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleBackToHome = () => {
+    navigate(-1);
+  };
+
   return (
     <DashboardLayout>
       <div className="space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold flex items-center gap-3">
-              <Layers className="w-8 h-8 text-primary" />
-              Research Clusters
-            </h1>
-            <p className="text-muted-foreground">
-              Discover research patterns and thematic groups powered by AI clustering
-            </p>
+          <div className="flex items-center gap-4">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleBackToHome}
+              className="gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
+            <div>
+              <h1 className="text-3xl font-bold flex items-center gap-3">
+                <Layers className="w-8 h-8 text-primary" />
+                Research Clusters
+              </h1>
+              <p className="text-muted-foreground">
+                Discover research patterns and thematic groups powered by AI clustering
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="gap-2">
+            <Button variant="outline" className="gap-2" onClick={() => navigate('/search')}>
               <Zap className="w-4 h-4" />
-              Generate New Clusters
+              Find Papers
             </Button>
-            <Button className="gap-2">
+            <Button className="gap-2" onClick={() => navigate('/analysis')}>
               <Sparkles className="w-4 h-4" />
               AI Insights
             </Button>
@@ -274,13 +326,25 @@ export default function Clusters() {
                         Updated {cluster.lastUpdated}
                       </span>
                       <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="sm">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => handleViewCluster(cluster.id)}
+                        >
                           <Eye className="w-4 h-4" />
                         </Button>
-                        <Button variant="ghost" size="sm">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => handleShareCluster(cluster)}
+                        >
                           <Share2 className="w-4 h-4" />
                         </Button>
-                        <Button variant="ghost" size="sm">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => handleDownloadCluster(cluster)}
+                        >
                           <Download className="w-4 h-4" />
                         </Button>
                       </div>

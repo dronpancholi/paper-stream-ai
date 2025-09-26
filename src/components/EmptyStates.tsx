@@ -116,7 +116,7 @@ export const AuthorsEmptyState = () => (
     description="Follow authors and researchers to stay updated with their latest work."
     action={{
       label: "Discover Authors",
-      onClick: () => window.location.href = '/dashboard'
+      onClick: () => window.location.href = '/authors'
     }}
   />
 );
@@ -127,8 +127,8 @@ export const ClustersEmptyState = () => (
     title="No research clusters"
     description="Research clusters will appear here as you build your paper collection."
     action={{
-      label: "Add Papers",
-      onClick: () => window.location.href = '/dashboard'
+      label: "Explore Clusters",
+      onClick: () => window.location.href = '/clusters'
     }}
   />
 );
