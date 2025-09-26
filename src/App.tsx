@@ -23,7 +23,9 @@ import Bookmarks from "./pages/Bookmarks";
 import History from "./pages/History";
 import Analysis from "./pages/Analysis";
 import AuthorsPage from "./pages/AuthorsPage";
+import AuthorDetailPage from "./pages/AuthorDetailPage";
 import ClustersPage from "./pages/ClustersPage";
+import ClusterDetailPage from "./pages/ClusterDetailPage";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -61,9 +63,9 @@ const App = () => (
                 <Route path="/history" element={<HistoryPage />} />
                 <Route path="/analysis" element={<AnalyticsPage />} />
                 <Route path="/authors" element={<AuthorsPage />} />
-                <Route path="/authors/:authorId" element={<div>Author Detail Route</div>} />
+                <Route path="/authors/:authorId" element={<AuthorDetailPage />} />
                 <Route path="/clusters" element={<ClustersPage />} />
-                <Route path="/clusters/:clusterId" element={<div>Cluster Detail Route</div>} />
+                <Route path="/clusters/:clusterId" element={<ClusterDetailPage />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/demo" element={<DemoPage />} />
                 <Route path="/settings" element={<Settings />} />
