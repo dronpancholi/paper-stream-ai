@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
+import { useSecurityContext } from '../Security/SecurityProvider';
 
 interface RouteGuardProps {
   children: React.ReactNode;
@@ -9,15 +10,21 @@ interface RouteGuardProps {
 export const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { validateSession } = useSecurityContext();
 
   useEffect(() => {
-    // Simulate route loading and validation
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 100);
+    const checkSession = async () => {
+      const isValid = await validateSession();
+      if (!isValid) {
+        navigate('/auth');
+      } else {
+        setIsLoading(false);
+      }
+    };
 
-    return () => clearTimeout(timer);
-  }, [location]);
+    checkSession();
+  }, [location, navigate, validateSession]);
 
   if (isLoading) {
     return (
