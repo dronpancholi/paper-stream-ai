@@ -28,6 +28,7 @@ import ClustersPage from "./pages/ClustersPage";
 import ClusterDetailPage from "./pages/ClusterDetailPage";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,6 +59,7 @@ const App = () => (
               <PageTransition>
                 <Routes>
                   <Route path="/" element={<LandingPage />} />
+                  <Route path="/dashboard" element={<RouteGuard><Dashboard /></RouteGuard>} />
                   <Route path="/search" element={<RouteGuard><SearchPage /></RouteGuard>} />
                   <Route path="/papers" element={<RouteGuard><MyPapersPage /></RouteGuard>} />
                   <Route path="/papers/:paperId" element={<RouteGuard><PaperViewerPage /></RouteGuard>} />
