@@ -63,8 +63,8 @@ export default function ClustersPage() {
     cluster.keywords.some(keyword => keyword.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const handleViewCluster = (clusterId: string) => {
-    navigate(`/dashboard?cluster=${clusterId}`);
+  const handleViewCluster = (clusterName: string) => {
+    navigate(`/search?q=${encodeURIComponent(clusterName)}`);
   };
 
   const handleShareCluster = async (cluster: Cluster) => {
@@ -100,7 +100,7 @@ export default function ClustersPage() {
   };
 
   const handleSearch = () => {
-    navigate('/dashboard');
+    navigate('/search');
   };
 
   if (loading) {
@@ -155,9 +155,9 @@ export default function ClustersPage() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="gap-2" onClick={() => navigate('/dashboard')}>
+            <Button variant="outline" className="gap-2" onClick={() => navigate('/search')}>
               <Search className="w-4 h-4" />
-              Add Papers
+              Find Papers
             </Button>
           </div>
         </div>
@@ -244,9 +244,10 @@ export default function ClustersPage() {
                           <Button 
                             variant="ghost" 
                             size="sm"
-                            onClick={() => handleViewCluster(cluster.id)}
+                            onClick={() => handleViewCluster(cluster.cluster_name)}
+                            title="Search papers in this cluster"
                           >
-                            <Eye className="w-4 h-4" />
+                            <Search className="w-4 h-4" />
                           </Button>
                           <Button 
                             variant="ghost" 

@@ -6,7 +6,7 @@ const NavigationWrapper: React.FC = () => {
   const location = useLocation();
   
   // Hide navigation on certain pages
-  const hideNavigationRoutes = ['/auth', '/', '/terms', '/privacy'];
+  const hideNavigationRoutes = ['/auth', '/signup', '/', '/terms', '/privacy'];
   const shouldHideNavigation = hideNavigationRoutes.includes(location.pathname);
 
   if (shouldHideNavigation) {

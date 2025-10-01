@@ -39,16 +39,16 @@ export default function NotFound() {
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
               <Button asChild size="lg" className="gap-2 min-w-[200px]">
-                <Link to="/">
-                  <Home className="w-5 h-5" />
-                  Go Home
+                <Link to="/search">
+                  <Search className="w-5 h-5" />
+                  Start Searching
                 </Link>
               </Button>
               
               <Button asChild variant="outline" size="lg" className="gap-2 min-w-[200px]">
-                <Link to="/search">
-                  <Search className="w-5 h-5" />
-                  Start Searching
+                <Link to="/">
+                  <Home className="w-5 h-5" />
+                  Go Home
                 </Link>
               </Button>
             </div>

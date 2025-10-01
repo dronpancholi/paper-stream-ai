@@ -73,11 +73,11 @@ export default function AuthorsPage() {
   };
 
   const handleSearch = () => {
-    navigate('/dashboard');
+    navigate('/search');
   };
 
-  const handleViewPapers = (authorId: string) => {
-    navigate(`/dashboard?author=${authorId}`);
+  const handleViewPapers = (authorName: string) => {
+    navigate(`/search?q=${encodeURIComponent(authorName)}`);
   };
 
   const handleAnalytics = (authorId: string) => {
@@ -136,7 +136,7 @@ export default function AuthorsPage() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="gap-2" onClick={() => navigate('/dashboard')}>
+            <Button variant="outline" className="gap-2" onClick={() => navigate('/search')}>
               <Search className="w-4 h-4" />
               Search Papers
             </Button>
@@ -240,10 +240,10 @@ export default function AuthorsPage() {
                             variant="ghost" 
                             size="sm" 
                             className="gap-2"
-                            onClick={() => handleViewPapers(author.author_id)}
+                            onClick={() => handleViewPapers(author.author_name)}
                           >
                             <BookOpen className="w-4 h-4" />
-                            View Papers
+                            Search Papers
                           </Button>
                           <Button 
                             variant="ghost" 
