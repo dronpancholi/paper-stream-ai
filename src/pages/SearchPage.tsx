@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { DashboardLayout } from '@/components/Layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,18 +11,41 @@ import { motion } from 'framer-motion';
 import { Search, Zap, Brain } from 'lucide-react';
 
 export default function SearchPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState('');
   const { results, loading, search } = useOptimizedSearch();
 
+  // Handle URL query parameters on mount
+  useEffect(() => {
+    const urlQuery = searchParams.get('q');
+    if (urlQuery) {
+      setQuery(urlQuery);
+      handleSearchWithQuery(urlQuery);
+    }
+  }, []);
+
+  const handleSearchWithQuery = async (searchQuery: string) => {
+    if (!searchQuery.trim()) return;
+    await search(searchQuery, ['arxiv', 'semantic-scholar']);
+  };
+
   const handleSearch = async () => {
     if (!query.trim()) return;
-    await search(query, ['arxiv', 'semantic-scholar']);
+    // Update URL with search query
+    setSearchParams({ q: query });
+    await handleSearchWithQuery(query);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
+  };
+
+  const handleQuickSearch = (term: string) => {
+    setQuery(term);
+    setSearchParams({ q: term });
+    handleSearchWithQuery(term);
   };
 
   const quickSearchTerms = [
@@ -109,7 +133,7 @@ export default function SearchPage() {
                     key={term}
                     variant="secondary" 
                     className="cursor-pointer hover:bg-primary hover:text-white transition-colors"
-                    onClick={() => setQuery(term)}
+                    onClick={() => handleQuickSearch(term)}
                   >
                     {term}
                   </Badge>

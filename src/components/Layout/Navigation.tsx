@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -31,12 +31,13 @@ const navigationItems = [
 
 export const Navigation: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, signOut } = useAuth();
 
   const handleSignOut = async () => {
     try {
       await signOut();
-      window.location.href = '/';
+      navigate('/');
     } catch (error) {
       console.error('Sign out error:', error);
     }
