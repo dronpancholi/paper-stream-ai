@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '@/components/Layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,7 @@ import { Search, FileText, Download, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function MyPapersPage() {
+  const navigate = useNavigate();
   const [bookmarkedPapers, setBookmarkedPapers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -160,7 +162,7 @@ export default function MyPapersPage() {
           title="Sign In Required"
           description="Please sign in to view your saved papers."
           actionLabel="Sign In"
-          onAction={() => window.location.href = '/auth'}
+          onAction={() => navigate('/auth')}
         />
       </DashboardLayout>
     );
@@ -226,7 +228,7 @@ export default function MyPapersPage() {
             title="No Saved Papers"
             description="Papers you bookmark will appear here. Start by searching and saving papers you want to reference later."
             actionLabel="Search Papers"
-            onAction={() => window.location.href = '/search'}
+            onAction={() => navigate('/search')}
           />
         ) : (
           <>

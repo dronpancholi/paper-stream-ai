@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '@/components/Layout/DashboardLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { EmptyState } from '@/pages/EmptyStates';
+import { EmptyState } from '@/components/EmptyStates';
 import { Search, History as HistoryIcon, Eye, Calendar, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
@@ -17,6 +18,7 @@ interface HistoryItem {
 }
 
 export default function HistoryPage() {
+  const navigate = useNavigate();
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const { user } = useAuth();
@@ -46,7 +48,7 @@ export default function HistoryPage() {
           title="Sign In Required"
           description="Please sign in to view your research history."
           actionLabel="Sign In"
-          onAction={() => window.location.href = '/auth'}
+          onAction={() => navigate('/auth')}
         />
       </DashboardLayout>
     );
@@ -74,7 +76,7 @@ export default function HistoryPage() {
             title="No Research History"
             description="Your search and viewing history will appear here."
             actionLabel="Start Researching"
-            onAction={() => window.location.href = '/search'}
+            onAction={() => navigate('/search')}
           />
         ) : (
           <Card>

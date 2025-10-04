@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { DashboardLayout } from '@/components/Layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -197,40 +198,40 @@ export default function Dashboard() {
                     className="h-24 flex-col gap-2 hover:bg-primary hover:text-white transition-colors"
                     asChild
                   >
-                    <a href="/analysis">
+                    <Link to="/analysis">
                       <TrendingUp className="w-8 h-8" />
                       <span>Research Trends</span>
-                    </a>
+                    </Link>
                   </Button>
                   <Button 
                     variant="outline" 
                     className="h-24 flex-col gap-2 hover:bg-primary hover:text-white transition-colors"
                     asChild
                   >
-                    <a href="/authors">
+                    <Link to="/authors">
                       <Users className="w-8 h-8" />
                       <span>Author Network</span>
-                    </a>
+                    </Link>
                   </Button>
                   <Button 
                     variant="outline" 
                     className="h-24 flex-col gap-2 hover:bg-primary hover:text-white transition-colors"
                     asChild
                   >
-                    <a href="/clusters">
+                    <Link to="/clusters">
                       <Brain className="w-8 h-8" />
                       <span>Research Clusters</span>
-                    </a>
+                    </Link>
                   </Button>
                   <Button 
                     variant="outline" 
                     className="h-24 flex-col gap-2 hover:bg-primary hover:text-white transition-colors"
                     asChild
                   >
-                    <a href="/bookmarks">
+                    <Link to="/bookmarks">
                       <BookOpen className="w-8 h-8" />
                       <span>Saved Papers</span>
-                    </a>
+                    </Link>
                   </Button>
                 </div>
               </CardContent>
@@ -258,10 +259,10 @@ export default function Dashboard() {
                   </div>
                 ))}
                 <Button variant="ghost" className="w-full text-sm" asChild>
-                  <a href="/history" className="flex items-center gap-2">
+                  <Link to="/history" className="flex items-center gap-2">
                     View all history
                     <ArrowRight className="w-4 h-4" />
-                  </a>
+                  </Link>
                 </Button>
               </CardContent>
             </Card>

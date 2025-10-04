@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { DashboardLayout } from '@/components/Layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -93,7 +94,7 @@ const Demo = () => {
               <span className="text-2xl font-bold text-white">ResearchAI Demo</span>
             </div>
             <Button asChild variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white hover:text-primary">
-              <a href="/auth">Try Full Platform</a>
+              <Link to="/auth">Try Full Platform</Link>
             </Button>
           </div>
         </nav>
@@ -292,7 +293,7 @@ const Demo = () => {
                   <h3 className="font-semibold mb-2">Ready to get started?</h3>
                   <p className="text-sm mb-4 opacity-90">Join thousands of researchers worldwide</p>
                   <Button asChild variant="secondary" className="w-full">
-                    <a href="/auth">Start Free Trial</a>
+                    <Link to="/auth">Start Free Trial</Link>
                   </Button>
                 </CardContent>
               </Card>

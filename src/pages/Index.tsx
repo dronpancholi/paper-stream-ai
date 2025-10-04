@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Presentation from '../components/Presentation';
 import { ArrowRight, Search } from 'lucide-react';
@@ -19,10 +20,10 @@ const Index = () => {
             className="bg-white text-primary hover:bg-white/90"
             asChild
           >
-            <a href="/search">
+            <Link to="/search">
               Try Platform
               <ArrowRight className="w-4 h-4 ml-1" />
-            </a>
+            </Link>
           </Button>
         </div>
       </div>

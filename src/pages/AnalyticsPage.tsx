@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '@/components/Layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { EmptyState } from '@/pages/EmptyStates';
+import { EmptyState } from '@/components/EmptyStates';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { 
@@ -33,6 +34,7 @@ interface TrendingTopic {
 }
 
 export default function AnalyticsPage() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [collaborationData, setCollaborationData] = useState<CollaborationNode[]>([]);
   const [emergingAreas, setEmergingAreas] = useState<TrendingTopic[]>([]);
@@ -140,11 +142,11 @@ export default function AnalyticsPage() {
     return (
       <DashboardLayout>
           <EmptyState
-            type="analysis"
+            type="analytics"
             title="Sign In Required"
             description="Please sign in to view your research analytics and insights."
             actionLabel="Sign In"
-            onAction={() => window.location.href = '/auth'}
+            onAction={() => navigate('/auth')}
           />
       </DashboardLayout>
     );
@@ -197,11 +199,11 @@ export default function AnalyticsPage() {
 
         {!hasData ? (
             <EmptyState
-              type="analysis"
+              type="analytics"
               title="No Analytics Data Yet"
               description="Start interacting with research papers to see analytics and insights. Bookmark, like, and rate papers to build your research profile."
               actionLabel="Start Exploring"
-              onAction={() => window.location.href = '/search'}
+              onAction={() => navigate('/search')}
             />
         ) : (
           <>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '@/components/Layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -108,6 +109,8 @@ const statusConfig = {
 };
 
 export default function RoadmapPage() {
+  const navigate = useNavigate();
+  
   return (
     <DashboardLayout>
       <div className="max-w-7xl mx-auto space-y-8">
@@ -267,7 +270,7 @@ export default function RoadmapPage() {
                 <Button 
                   size="lg" 
                   className="bg-gradient-primary text-lg px-8 py-4"
-                  onClick={() => window.location.href = '/search'}
+                  onClick={() => navigate('/search')}
                 >
                   <Brain className="w-5 h-5 mr-2" />
                   Try the Platform
@@ -276,7 +279,7 @@ export default function RoadmapPage() {
                   variant="outline" 
                   size="lg"
                   className="text-lg px-8 py-4"
-                  onClick={() => window.location.href = '/profile'}
+                  onClick={() => navigate('/profile')}
                 >
                   <Users className="w-5 h-5 mr-2" />
                   Provide Feedback

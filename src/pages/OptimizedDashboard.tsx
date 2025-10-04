@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { useOptimizedSearch } from '@/hooks/useOptimizedSearch';
 import { CardSkeleton } from '@/components/LoadingStates';
-import { SearchEmptyState, EmptyState } from '@/components/EmptyStates';
+import { EmptyState } from '@/components/EmptyStates';
 import { PaperCard } from '@/components/Research/PaperCard';
 
 const OptimizedDashboard = memo(() => {
@@ -169,10 +169,10 @@ const OptimizedDashboard = memo(() => {
                 </div>
               </div>
             ) : searchQuery ? (
-              <SearchEmptyState />
+              <EmptyState type="search" />
             ) : (
               <EmptyState
-                icon={<Search className="w-8 h-8 text-muted-foreground" />}
+                type="search"
                 title="Start Your Research Journey"
                 description="Enter a topic, author name, or research question to discover millions of academic papers."
               />
@@ -181,7 +181,7 @@ const OptimizedDashboard = memo(() => {
 
           <TabsContent value="recent" className="space-y-6">
             <EmptyState
-              icon={<Clock className="w-8 h-8 text-muted-foreground" />}
+              type="history"
               title="Recent Papers Coming Soon"
               description="This feature will show your recently viewed and saved papers."
             />
@@ -189,7 +189,7 @@ const OptimizedDashboard = memo(() => {
 
           <TabsContent value="trending" className="space-y-6">
             <EmptyState
-              icon={<TrendingUp className="w-8 h-8 text-muted-foreground" />}
+              type="search"
               title="Trending Papers Coming Soon"
               description="Discover the most cited and discussed papers in your field."
             />
